@@ -138,7 +138,7 @@ def fashion_advisor():
     """
 
     # Gemini AI setup
-    API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyDIQK48sSaD3pQJEKWKqXUQqBOzx_Ci0RQ")
+    API_KEY = os.environ.get("GEMINI_API_KEY", "")
     genai.configure(api_key=API_KEY)
 
     try:
@@ -176,3 +176,4 @@ def fashion_advisor():
 # -------------------- Run App --------------------
 if __name__ == "__main__":
     app.run(debug=True)
+
