@@ -1,0 +1,15 @@
+Project Title: Fashion Advisor (ai bot)
+
+
+Objective: 
+to help user choose suitable outfits based on their preferences and personality , personalised  fashion helper for  user
+
+
+
+Description:
+this bot suggest clothes based on user details provided such as skin tone, weight, height, gender, age and event type and style choice. User can share image of the outfits and ask of
+accessories and even they can check it on pinterest,and also checkout amazon and flipkart links if they want to buys similar products or recommended products.
+
+Tools and language used:
+Html, Css, python library like flask ,sqlalchemey ,Gemini API ,ChatGPT etc
+

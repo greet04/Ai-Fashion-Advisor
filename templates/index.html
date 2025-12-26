@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StyleMate - Fashion Advisor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  
+  <div id="pageLoader">
+    <div class="loader-ring"></div>
+    <div class="loader-text">StyleMate</div>
+  </div>
+
+  
+  <nav>
+    <h1 class="logo">StyleMate</h1>
+    <button onclick="logout()">Logout</button>
+  </nav>
+
+  
+  <div class="welcome-container" id="welcomeSection">
+    <h2>Welcome, <span>{{ name }}</span> 👋</h2>
+    <p>Your personal AI fashion guide is ready to help you style smarter ✨</p>
+  </div>
+
+  
+  <div id="ask_container">
+    <form id="askForm" enctype="multipart/form-data" onsubmit="askBot(); return false;">
+      
+      
+      <label for="outfitImage" class="image-upload-label">
+        <span class="plus-sign" id="plusSign">+</span>
+        <input type="file" id="outfitImage" name="image" accept="image/*" hidden>
+      </label>
+
+      
+      <input type="text" id="userInput" placeholder="Ask for outfit suggestions...">
+
+      
+      <button id="askBtn" type="submit">Ask</button>
+
+      
+      <span id="loader" class="loader" style="display:none;"></span>
+    </form>
+  </div>
+
+  
+  <div id="messages" class="messages-container"></div>
+
+  <!-- Script -->
+  <script>
+  
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("pageLoader");
+      setTimeout(() => {
+        loader.style.opacity = "0";
+        loader.style.transition = "opacity 0.6s ease";
+        setTimeout(() => loader.style.display = "none", 600);
+      }, 800);
+
+    
+      const welcome = document.getElementById("welcomeSection");
+      if (welcome) {
+        welcome.style.display = "block";
+        welcome.style.opacity = "1";
+      }
+    });
+
+    function logout() {
+      window.location.href = "/logout";
+    }
+
+    
+    document.getElementById("outfitImage").addEventListener("change", function() {
+      const plusSign = document.getElementById("plusSign");
+      if (this.files && this.files.length > 0) {
+        plusSign.style.color = "#2ecc71";
+        plusSign.style.transition = "color 0.3s ease";
+      } else {
+        plusSign.style.color = "#aaa"; 
+      }
+    });
+
+    async function askBot() {
+      const query = document.getElementById("userInput").value.trim();
+      const imageFile = document.getElementById("outfitImage").files[0];
+      const askBtn = document.getElementById("askBtn");
+      const loader = document.getElementById("loader");
+      const messages = document.getElementById("messages");
+
+      if (!query && !imageFile) {
+        alert("Please enter a query or upload an image!");
+        return;
+      }
+
+      askBtn.disabled = true;
+      loader.style.display = "inline-block";
+
+      const formData = new FormData();
+      formData.append("query", query);
+      if (imageFile) formData.append("image", imageFile);
+
+      try {
+        const res = await fetch("/fashion-advisor", {
+          method: "POST",
+          body: formData
+        });
+
+        const data = await res.json();
+        const botReply = data.reply || "No response received.";
+
+        
+        const welcomeSection = document.getElementById("welcomeSection");
+        if (welcomeSection) {
+          welcomeSection.style.transition = "opacity 0.6s ease";
+          welcomeSection.style.opacity = "0";
+          setTimeout(() => (welcomeSection.style.display = "none"), 600);
+        }
+
+        const imageHTML = data.image
+          ? `<img src="${data.image}" alt="Uploaded Outfit" class="uploaded-outfit">`
+          : "";
+
+        const messageBlock = `
+          <div class="result-block">
+            <div class="user-block">
+              <p><b>You:</b> ${query || "(uploaded an image)"}</p>
+              ${imageHTML}
+            </div>
+            <div class="bot-block">
+              <b>StyleMate:</b>
+              <div class="bot-reply">${botReply}</div>
+              <p class="shop-links">🛒 Buy on:
+                <a href="${data.amazon}" target="_blank">Amazon</a> |
+                <a href="${data.flipkart}" target="_blank">Flipkart</a> |
+                <a href="${data.pinterest}" target="_blank">Pinterest</a>
+              </p>
+            </div>
+          </div>
+        `;
+
+        messages.innerHTML = messageBlock + messages.innerHTML;
+
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+      } finally {
+        askBtn.disabled = false;
+        loader.style.display = "none";
+        document.getElementById("userInput").value = "";
+        document.getElementById("outfitImage").value = "";
+        document.getElementById("plusSign").style.color = "#aaa";
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Register - Fashion Advisor</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body class="register-page">
+  <div class="register-container">
+    <h2>Register</h2>
+    <form method="POST">
+      <input type="text" name="name" placeholder="Name" required><br>
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="Password" required><br>
+      <input type="text" name="height" placeholder="Height (cm)" required><br>
+      <input type="text" name="weight" placeholder="Weight (kg)" required><br>
+      <input type="text" name="age" placeholder="Age" required><br>
+
+
+
+      <!-- Skin Color dropdown -->
+      <label for="skin_color">Skin Color:</label>
+      <select name="skin_color" id="skin_color" required>
+        <option value="" disabled selected>Select your skin color</option>
+        <option value="fair">Fair</option>
+        <option value="medium">Medium</option>
+        <option value="wheatish">Wheatish</option>
+        <option value="olive">Olive</option>
+        <option value="tan">Tan</option>
+        <option value="dark">Dark</option>
+      </select>
+      <br><br>
+
+      <!-- Body Shape dropdown -->
+      <label for="body_shape">Body Shape:</label>
+      <select name="body_shape" id="body_shape" required>
+        <option value="" disabled selected>Select your body shape</option>
+        <option value="rectangle">Rectangle</option>
+        <option value="pear">Pear</option>
+        <option value="apple">Apple</option>
+        <option value="hourglass">Hourglass</option>
+        <option value="inverted_triangle">Inverted Triangle</option>
+      </select>
+      <br><br>
+
+
+
+      <!-- Gender dropdown -->
+      <label for="gender">Gender:</label>
+      <select name="gender" id="gender" required>
+        <option value="" disabled selected>Select your gender</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+        <option value="other">Other</option>
+      </select>
+      <br><br>
+
+      <button type="submit">Register</button>
+    </form>
+    <p>Already registered? <a href="/login">Login</a></p>
+  </div>
+</body>
+
+</html>
